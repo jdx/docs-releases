@@ -12,6 +12,10 @@ const usage = `usage: docs-releases sync [notes|issues] [--refresh] [--root <dir
 Options come from the "docs-releases" key of package.json.`;
 
 const args = process.argv.slice(2);
+if (args.includes("--help") || args.includes("-h")) {
+  console.log(usage);
+  process.exit(0);
+}
 const flag = (name) => {
   const i = args.indexOf(name);
   if (i === -1) return undefined;
@@ -24,7 +28,7 @@ const [command, what] = args.filter((a) => !a.startsWith("--"));
 
 if (command !== "sync" || (what && !["notes", "issues"].includes(what))) {
   console.error(usage);
-  process.exit(command === "--help" || command === "-h" ? 0 : 2);
+  process.exit(2);
 }
 
 const options = resolveOptions(root ? { root } : {});
