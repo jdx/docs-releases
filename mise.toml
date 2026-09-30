@@ -1,0 +1,6 @@
+[tools]
+node = "24"
+
+[tasks.test]
+description = "Run the unit tests"
+run = "npm test"

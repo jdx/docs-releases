@@ -1,0 +1,54 @@
+{
+  "name": "@jdx/docs-releases",
+  "version": "0.1.0",
+  "description": "A releases page for VitePress docs: a timeline of release sizes, resolved issues, and each release's GitHub notes.",
+  "keywords": [
+    "vitepress",
+    "releases",
+    "changelog",
+    "release-notes",
+    "docs"
+  ],
+  "license": "MIT",
+  "author": "Jeff Dickey (https://github.com/jdx)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdx/docs-releases.git"
+  },
+  "homepage": "https://github.com/jdx/docs-releases#readme",
+  "bugs": "https://github.com/jdx/docs-releases/issues",
+  "type": "module",
+  "exports": {
+    "./data": {
+      "types": "./src/data.d.mts",
+      "default": "./src/data.mjs"
+    },
+    "./vitepress": {
+      "types": "./src/vitepress.d.mts",
+      "default": "./src/vitepress.mjs"
+    },
+    "./Releases.vue": "./src/Releases.vue",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "docs-releases": "./bin/docs-releases.mjs"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "peerDependencies": {
+    "vitepress": "^1.6.0",
+    "vue": "^3.4.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
