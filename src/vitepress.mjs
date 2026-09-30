@@ -19,7 +19,7 @@ export function releaseNotesPlugin(overrides) {
   return [
     {
       name: "docs-releases",
-      config: () => ({ ssr: { noExternal: ["@jdx/docs-releases"] } }),
+      config: () => ({ ssr: { noExternal: ["@jdxcode/docs-releases"] } }),
       configResolved(config) {
         siteConfig = config.vitepress;
         ssr = !!config.build.ssr;

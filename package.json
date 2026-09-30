@@ -1,5 +1,5 @@
 {
-  "name": "@jdx/docs-releases",
+  "name": "@jdxcode/docs-releases",
   "version": "0.1.0",
   "description": "A releases page for VitePress docs: a timeline of release sizes, resolved issues, and each release's GitHub notes.",
   "keywords": [

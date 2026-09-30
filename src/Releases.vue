@@ -19,7 +19,7 @@ type Release = {
   issues: number | null;
 };
 
-// What defineReleasesData (@jdx/docs-releases/data) loads.
+// What defineReleasesData (@jdxcode/docs-releases/data) loads.
 const props = defineProps<{
   data: {
     repo: string;

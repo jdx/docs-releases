@@ -1,4 +1,4 @@
-# @jdx/docs-releases
+# @jdxcode/docs-releases
 
 A releases page for [VitePress](https://vitepress.dev) docs:
 
@@ -11,7 +11,7 @@ It reads `CHANGELOG.md` in the [git-cliff](https://git-cliff.org) layout (`## [1
 ## Set up
 
 ```sh
-npm install --save-dev @jdx/docs-releases
+npm install --save-dev @jdxcode/docs-releases
 ```
 
 Point it at your repository in `package.json`:
@@ -28,8 +28,8 @@ Point it at your repository in `package.json`:
 Add the data loader, `docs/releases.data.ts`:
 
 ```ts
-import { defineReleasesData } from "@jdx/docs-releases/data";
-import type { ReleasesData } from "@jdx/docs-releases/data";
+import { defineReleasesData } from "@jdxcode/docs-releases/data";
+import type { ReleasesData } from "@jdxcode/docs-releases/data";
 
 export default defineReleasesData();
 
@@ -40,7 +40,7 @@ export { data };
 Add the plugin to `.vitepress/config.ts`:
 
 ```ts
-import { releaseNotesPlugin } from "@jdx/docs-releases/vitepress";
+import { releaseNotesPlugin } from "@jdxcode/docs-releases/vitepress";
 
 export default defineConfig({
   vite: { plugins: [...releaseNotesPlugin()] },
@@ -53,7 +53,7 @@ Add the page, `docs/releases.md`:
 # Releases
 
 <script setup>
-import Releases from '@jdx/docs-releases/Releases.vue';
+import Releases from '@jdxcode/docs-releases/Releases.vue';
 import { data } from './releases.data';
 </script>
 

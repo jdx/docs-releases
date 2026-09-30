@@ -6,7 +6,7 @@ import { resolveOptions } from "./options.mjs";
 /**
  * The VitePress data loader for the Releases page. In a `*.data.ts` file:
  *
- *     import { defineReleasesData } from "@jdx/docs-releases/data";
+ *     import { defineReleasesData } from "@jdxcode/docs-releases/data";
  *     export default defineReleasesData();
  *     declare const data: ReleasesData;
  *     export { data };
