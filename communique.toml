@@ -1,0 +1,4 @@
+context = "@jdxcode/docs-releases is an npm package that adds a releases page to VitePress docs: a timeline of release sizes, resolved-issue counts, and each release's GitHub notes, with a Vue component, a data loader, a Vite plugin and a `docs-releases sync` CLI."
+
+[defaults]
+emoji = false

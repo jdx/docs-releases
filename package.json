@@ -1,6 +1,6 @@
 {
   "name": "@jdxcode/docs-releases",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "A releases page for VitePress docs: a timeline of release sizes, resolved issues, and each release's GitHub notes.",
   "keywords": [
     "vitepress",
@@ -38,7 +38,8 @@
     "src"
   ],
   "scripts": {
-    "test": "node --test test/*.test.mjs"
+    "test": "node --test test/*.test.mjs",
+    "version": "./scripts/version.sh"
   },
   "engines": {
     "node": ">=22"

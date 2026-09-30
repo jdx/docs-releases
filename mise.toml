@@ -1,6 +1,13 @@
 [tools]
 node = "24"
+git-cliff = "latest"
+gh = "latest"
+communique = { version = "latest", minimum_release_age = "0s" }
 
 [tasks.test]
 description = "Run the unit tests"
 run = "npm test"
+
+[tasks.release-plz]
+description = "Open or update the release PR"
+run = "./scripts/release-plz.sh"
