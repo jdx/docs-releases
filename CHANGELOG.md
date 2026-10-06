@@ -1,6 +1,17 @@
 # Changelog
 
 ---
+## [0.1.2](https://github.com/jdx/docs-releases/compare/v0.1.1..v0.1.2) - 2026-10-06
+
+### ⚙️ Miscellaneous Tasks
+
+- release on a seven-day cadence (#3) by [@jdx](https://github.com/jdx) in [#3](https://github.com/jdx/docs-releases/pull/3)
+
+### New Contributors
+
+* @renovate[bot] made their first contribution in [#4](https://github.com/jdx/docs-releases/pull/4)
+
+---
 ## [0.1.1](https://github.com/jdx/docs-releases/compare/v0.1.0..v0.1.1) - 2026-09-30
 
 ### 🐛 Bug Fixes
