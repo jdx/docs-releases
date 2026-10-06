@@ -62,7 +62,7 @@ jobs:
           fi
 
           BODY=$(gh pr view "$PR_NUMBER" -R jdx/docs-releases --json body --jq '.body // ""')
-          TRIMMED_BODY=$(echo "$BODY" | tr -d '[:space:]')
+          TRIMMED_BODY=$(printf '%s' "$BODY" | tr -d '[:space:]')
           if [ -z "$TRIMMED_BODY" ]; then
             echo "Skipping merge: PR #$PR_NUMBER has an empty body; will retry on the next scheduled run"
             exit 0
