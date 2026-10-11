@@ -259,8 +259,15 @@ onUnmounted(() => {
 });
 
 const chartHeight = 140;
+// Bars use a square-root scale. On a linear one a single large release sets the
+// top of the axis and leaves the typical release a sliver a few pixels high.
 const barHeight = (value: number, max: number) =>
-  value === 0 ? 0 : Math.max(2, (value / max) * chartHeight);
+  value === 0 ? 0 : Math.max(2, Math.sqrt(value / max) * chartHeight);
+// The value a bar half the chart's height stands for.
+const midValue = (max: number) => Math.round(max / 4);
+
+const plural = (n: number, one: string, many: string) =>
+  `${n} ${n === 1 ? one : many}`;
 </script>
 
 <template>
@@ -287,17 +294,18 @@ const barHeight = (value: number, max: number) =>
       <span class="date">{{ shown.date }}</span>
       <span>{{ describe(shown) }}</span>
       <span class="breakdown">
-        {{ shown.categories.features }} features ·
-        {{ shown.categories.fixes }} fixes ·
+        {{ plural(shown.categories.features, "feature", "features") }} ·
+        {{ plural(shown.categories.fixes, "fix", "fixes") }} ·
         {{ shown.categories.registry }} registry ·
         {{ shown.categories.other }} other
       </span>
     </p>
 
     <figure class="chart changes">
-      <figcaption>Changes per release</figcaption>
+      <figcaption>Changes per release (square-root scale)</figcaption>
       <div class="plot" :style="{ height: chartHeight + 'px' }">
         <span class="axis max">{{ maxChanges }}</span>
+        <span class="axis mid">{{ midValue(maxChanges) }}</span>
         <span class="axis zero">0</span>
         <button
           v-for="r in releases"
@@ -326,9 +334,12 @@ const barHeight = (value: number, max: number) =>
     </figure>
 
     <figure v-if="issueReleases.length" class="chart issues">
-      <figcaption>Issues resolved per release, since {{ sinceLabel }}</figcaption>
+      <figcaption>
+        Issues resolved per release, since {{ sinceLabel }} (square-root scale)
+      </figcaption>
       <div class="plot" :style="{ height: chartHeight * 0.6 + 'px' }">
         <span class="axis max">{{ maxIssues }}</span>
+        <span class="axis mid">{{ midValue(maxIssues) }}</span>
         <span class="axis zero">0</span>
         <button
           v-for="r in issueReleases"
@@ -366,10 +377,9 @@ const barHeight = (value: number, max: number) =>
     </p>
 
     <div class="columns" aria-hidden="true">
-      <span>Release</span>
-      <span class="size-label">Changes</span>
-      <span class="count">Total</span>
-      <span v-if="issuesSince" class="count issue-count">Issues</span>
+      <span class="release-label">Release</span>
+      <span class="count">Changes</span>
+      <span v-if="issuesSince" class="count">Issues</span>
     </div>
 
     <section v-for="group in visibleMonths" :key="group.month" class="month">
@@ -392,15 +402,15 @@ const barHeight = (value: number, max: number) =>
             <summary class="row">
               <span class="version">{{ r.version }}</span>
               <span class="date">{{ r.date }}</span>
+              <span class="count">{{ r.changes }}</span>
+              <span v-if="issuesSince" class="count issue-count">{{
+                hasIssueCount(r) ? (r.issues ?? "–") : "–"
+              }}</span>
               <span class="size" aria-hidden="true">
                 <span
                   :style="{ width: (r.changes / maxChanges) * 100 + '%' }"
                 ></span>
               </span>
-              <span class="count">{{ r.changes }}</span>
-              <span v-if="issuesSince" class="count issue-count">{{
-                hasIssueCount(r) ? (r.issues ?? "–") : "–"
-              }}</span>
             </summary>
             <div v-if="opened.has(r.version)" class="notes">
               <p class="notes-head">
@@ -447,6 +457,9 @@ const barHeight = (value: number, max: number) =>
 
 <style scoped>
 .releases {
+  /* The list's columns: version, date, changes, issues, and the size bar. The
+     header and the rows set different font sizes, so these are not in em. */
+  --columns: 96px 92px 64px 56px 1fr;
   --changes: var(--vp-c-brand-1);
   --issues: #2f7ea1;
   --grid: var(--vp-c-divider);
@@ -520,6 +533,9 @@ const barHeight = (value: number, max: number) =>
 .axis.max {
   top: -6px;
 }
+.axis.mid {
+  top: calc(50% - 6px);
+}
 .axis.zero {
   bottom: -6px;
 }
@@ -564,13 +580,13 @@ const barHeight = (value: number, max: number) =>
 
 .columns {
   display: grid;
-  grid-template-columns: 6.5em 6.5em 1fr 3em 3em;
-  gap: 8px;
+  grid-template-columns: var(--columns);
+  gap: 12px;
   color: var(--vp-c-text-2);
   font-size: 12px;
 }
-.columns .size-label {
-  grid-column: 2 / 4;
+.columns .release-label {
+  grid-column: 1 / 3;
 }
 .month h3 {
   display: flex;
@@ -598,12 +614,16 @@ const barHeight = (value: number, max: number) =>
   font-size: 14px;
   font-variant-numeric: tabular-nums;
 }
+/* summary resets the margin VitePress gives .vp-doc summary, which doubled each
+   row's height. */
 .row {
   display: grid;
-  grid-template-columns: 6.5em 6.5em 1fr 3em 3em;
+  grid-template-columns: var(--columns);
   align-items: center;
-  gap: 8px;
-  padding: 3px 0;
+  gap: 12px;
+  margin: 0;
+  padding: 6px 0;
+  line-height: 1.5;
   cursor: pointer;
   list-style: none;
 }
@@ -625,12 +645,21 @@ const barHeight = (value: number, max: number) =>
 .row .date {
   color: var(--vp-c-text-2);
 }
-details[open] > .row .version::before {
-  content: "▾ ";
+/* A chevron drawn with borders, since the page's font may have no ▸ glyph. */
+.row .version::before {
+  content: "";
+  display: inline-block;
+  width: 0.35em;
+  height: 0.35em;
+  margin: 0 0.5em 0.15em 0.1em;
+  border-right: 1.5px solid var(--vp-c-text-3);
+  border-bottom: 1.5px solid var(--vp-c-text-3);
+  transform: rotate(-45deg);
+  transition: transform 0.15s;
 }
-details:not([open]) > .row .version::before {
-  content: "▸ ";
-  color: var(--vp-c-text-3);
+details[open] > .row .version::before {
+  border-color: currentColor;
+  transform: rotate(45deg);
 }
 .notes {
   margin: 4px 0 14px;
@@ -704,9 +733,8 @@ details:not([open]) > .row .version::before {
    so they touch and the chart reads as a filled outline, and only years are
    labeled. */
 /* Without issue counts the list has no last column. */
-.no-issues .columns,
-.no-issues .row {
-  grid-template-columns: 6.5em 6.5em 1fr 3em;
+.no-issues {
+  --columns: 96px 92px 64px 1fr;
 }
 
 @media (max-width: 800px) {
@@ -722,21 +750,17 @@ details:not([open]) > .row .version::before {
 }
 
 @media (max-width: 560px) {
-  .row {
-    grid-template-columns: 5.5em 1fr 2.5em 2.5em;
+  .releases {
+    --columns: 88px 60px 48px 1fr;
+  }
+  .releases.no-issues {
+    --columns: 88px 60px 1fr;
   }
   .row .date {
     display: none;
   }
-  .columns {
-    grid-template-columns: 5.5em 1fr 2.5em 2.5em;
-  }
-  .no-issues .columns,
-  .no-issues .row {
-    grid-template-columns: 5.5em 1fr 2.5em;
-  }
-  .columns .size-label {
-    grid-column: 2;
+  .columns .release-label {
+    grid-column: 1;
   }
 }
 </style>
