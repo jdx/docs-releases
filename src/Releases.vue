@@ -263,8 +263,12 @@ const chartHeight = 140;
 // top of the axis and leaves the typical release a sliver a few pixels high.
 const barHeight = (value: number, max: number) =>
   value === 0 ? 0 : Math.max(2, Math.sqrt(value / max) * chartHeight);
-// The value a bar half the chart's height stands for.
+// A whole-number tick near half the chart's height, drawn at the height of the
+// value it shows. Rounding moves it off the middle, and a small maximum rounds
+// it to 0, which the zero tick already labels, so it is then left out.
 const midValue = (max: number) => Math.round(max / 4);
+const midBottom = (max: number) =>
+  `calc(${Math.sqrt(midValue(max) / max) * 100}% - 6px)`;
 
 const plural = (n: number, one: string, many: string) =>
   `${n} ${n === 1 ? one : many}`;
@@ -305,7 +309,12 @@ const plural = (n: number, one: string, many: string) =>
       <figcaption>Changes per release (square-root scale)</figcaption>
       <div class="plot" :style="{ height: chartHeight + 'px' }">
         <span class="axis max">{{ maxChanges }}</span>
-        <span class="axis mid">{{ midValue(maxChanges) }}</span>
+        <span
+          v-if="midValue(maxChanges)"
+          class="axis mid"
+          :style="{ bottom: midBottom(maxChanges) }"
+          >{{ midValue(maxChanges) }}</span
+        >
         <span class="axis zero">0</span>
         <button
           v-for="r in releases"
@@ -339,7 +348,12 @@ const plural = (n: number, one: string, many: string) =>
       </figcaption>
       <div class="plot" :style="{ height: chartHeight * 0.6 + 'px' }">
         <span class="axis max">{{ maxIssues }}</span>
-        <span class="axis mid">{{ midValue(maxIssues) }}</span>
+        <span
+          v-if="midValue(maxIssues)"
+          class="axis mid"
+          :style="{ bottom: midBottom(maxIssues) }"
+          >{{ midValue(maxIssues) }}</span
+        >
         <span class="axis zero">0</span>
         <button
           v-for="r in issueReleases"
@@ -532,9 +546,6 @@ const plural = (n: number, one: string, many: string) =>
 }
 .axis.max {
   top: -6px;
-}
-.axis.mid {
-  top: calc(50% - 6px);
 }
 .axis.zero {
   bottom: -6px;
