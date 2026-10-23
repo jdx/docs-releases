@@ -1,6 +1,14 @@
 # Changelog
 
 ---
+## [0.1.3](https://github.com/jdx/docs-releases/compare/v0.1.2..v0.1.3) - 2026-10-23
+
+### ⚙️ Miscellaneous Tasks
+
+- **(release)** shorten minimum release age to 2 days by [@jdx](https://github.com/jdx) in [b86113d](https://github.com/jdx/docs-releases/commit/b86113d2ce4ab5b7f5e3a051d91834f770a221aa)
+- stop restoring caches in release jobs (#8) by [@jdx](https://github.com/jdx) in [#8](https://github.com/jdx/docs-releases/pull/8)
+
+---
 ## [0.1.2](https://github.com/jdx/docs-releases/compare/v0.1.1..v0.1.2) - 2026-10-11
 
 ### 🐛 Bug Fixes
