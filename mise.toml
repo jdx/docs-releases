@@ -1,5 +1,5 @@
 [tools]
-node = "24"
+node = "26"
 git-cliff = "latest"
 gh = "latest"
 communique = { version = "latest", minimum_release_age = "0s" }
