@@ -1,6 +1,19 @@
 # Changelog
 
 ---
+## [0.1.3](https://github.com/jdx/docs-releases/compare/v0.1.2..v0.1.3) - 2026-11-27
+
+### ⚙️ Miscellaneous Tasks
+
+- **(release)** shorten minimum release age to 2 days by [@jdx](https://github.com/jdx) in [b86113d](https://github.com/jdx/docs-releases/commit/b86113d2ce4ab5b7f5e3a051d91834f770a221aa)
+- stop restoring caches in release jobs (#8) by [@jdx](https://github.com/jdx) in [#8](https://github.com/jdx/docs-releases/pull/8)
+- add GitHub Actions workflow lockfile by [@claude](https://github.com/claude) in [36675a0](https://github.com/jdx/docs-releases/commit/36675a0f84de204d6a569e12891a7277abe834e7)
+
+### New Contributors
+
+* @claude made their first contribution
+
+---
 ## [0.1.2](https://github.com/jdx/docs-releases/compare/v0.1.1..v0.1.2) - 2026-10-11
 
 ### 🐛 Bug Fixes
